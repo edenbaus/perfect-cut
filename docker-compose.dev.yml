@@ -1,0 +1,91 @@
+version: "3.8"
+
+# Development-specific Docker Compose configuration
+# This extends the base docker-compose.yml with development settings
+
+services:
+  # Database - same as production
+  db:
+    image: postgres:15-alpine
+    container_name: perfectcut-db-dev
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-perfectcut}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres_data_dev:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - perfectcut-network-dev
+
+  # Backend - Development mode with hot reload
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: perfectcut-backend-dev
+    restart: unless-stopped
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-postgres}:${POSTGRES_PASSWORD:-postgres}@db:5432/${POSTGRES_DB:-perfectcut}
+      SECRET_KEY: ${SECRET_KEY:-dev-secret-key-not-for-production-use-only}
+      ALGORITHM: ${ALGORITHM:-HS256}
+      ACCESS_TOKEN_EXPIRE_MINUTES: ${ACCESS_TOKEN_EXPIRE_MINUTES:-30}
+      BACKEND_CORS_ORIGINS: ${BACKEND_CORS_ORIGINS:-["http://localhost:5173","http://localhost:3000","http://localhost"]}
+      PYTHONUNBUFFERED: 1
+    ports:
+      - "${BACKEND_PORT:-8005}:8005"
+    volumes:
+      # Mount source code for hot reload
+      - ./backend:/app
+      - /app/venv # Exclude venv from mount
+    command: >
+      sh -c "
+        echo 'Waiting for database...' &&
+        sleep 5 &&
+        echo 'Running migrations...' &&
+        alembic upgrade head &&
+        echo 'Starting development server with hot reload...' &&
+        uvicorn app.main:app --host 0.0.0.0 --port 8005 --reload
+      "
+    networks:
+      - perfectcut-network-dev
+
+  # Frontend - Development mode with Vite
+  frontend-dev:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile.dev
+    container_name: perfectcut-frontend-dev
+    restart: unless-stopped
+    depends_on:
+      - backend
+    environment:
+      VITE_API_URL: ${VITE_API_URL:-http://localhost:8000/api}
+    ports:
+      - "${FRONTEND_PORT:-5173}:5173"
+    volumes:
+      # Mount source code for hot reload
+      - ./frontend:/app
+      - /app/node_modules # Exclude node_modules from mount
+    command: npm run dev -- --host 0.0.0.0
+    networks:
+      - perfectcut-network-dev
+
+volumes:
+  postgres_data_dev:
+    name: perfectcut_postgres_data_dev
+
+networks:
+  perfectcut-network-dev:
+    name: perfectcut-network-dev
+    driver: bridge

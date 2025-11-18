@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <!-- Background circle -->
+  <circle cx="32" cy="32" r="32" fill="#1e293b"/>
+
+  <!-- Plywood sheets (stacked effect) with updated colors -->
+  <rect x="8" y="24" width="48" height="32" rx="2" fill="#d4a574" stroke="#8B4513" stroke-width="1.5"/>
+  <rect x="10" y="26" width="44" height="28" rx="1" fill="#c9975b" stroke="#8B4513" stroke-width="1"/>
+
+  <!-- Wood grain lines on top sheet -->
+  <path d="M 12 30 Q 20 28 30 30 Q 40 32 48 30" fill="none" stroke="#A0522D" stroke-width="0.5" opacity="0.5"/>
+  <path d="M 12 36 Q 22 34 32 36 Q 42 38 48 36" fill="none" stroke="#A0522D" stroke-width="0.5" opacity="0.5"/>
+  <path d="M 12 42 Q 20 40 30 42 Q 40 44 48 42" fill="none" stroke="#A0522D" stroke-width="0.5" opacity="0.5"/>
+  <path d="M 12 48 Q 22 46 32 48 Q 42 50 48 48" fill="none" stroke="#A0522D" stroke-width="0.5" opacity="0.5"/>
+
+  <!-- Circular saw blade with amber accent -->
+  <circle cx="44" cy="20" r="13" fill="#f59e0b" opacity="0.3"/>
+  <circle cx="44" cy="20" r="12" fill="#D0D0D0" stroke="#404040" stroke-width="1.5"/>
+  <circle cx="44" cy="20" r="2" fill="#1e293b"/>
+
+  <!-- Saw blade teeth (amber highlights) -->
+  <path d="M 44 8 L 45.5 10 L 42.5 10 Z" fill="#f59e0b"/>
+  <path d="M 52.5 11.5 L 54 13.5 L 51 13 Z" fill="#f59e0b"/>
+  <path d="M 56.5 20 L 57.5 21.5 L 55 19.5 Z" fill="#f59e0b"/>
+  <path d="M 52.5 28.5 L 54 26.5 L 51 27 Z" fill="#f59e0b"/>
+  <path d="M 44 32 L 45.5 30 L 42.5 30 Z" fill="#f59e0b"/>
+  <path d="M 35.5 28.5 L 37 27 L 34 26.5 Z" fill="#f59e0b"/>
+  <path d="M 31.5 20 L 33 19.5 L 30.5 21.5 Z" fill="#f59e0b"/>
+  <path d="M 35.5 11.5 L 37 13 L 34 13.5 Z" fill="#f59e0b"/>
+
+  <!-- Center arbor hole detail -->
+  <circle cx="44" cy="20" r="4" fill="none" stroke="#1e293b" stroke-width="0.8"/>
+  <circle cx="44" cy="20" r="5.5" fill="none" stroke="#f59e0b" stroke-width="0.5" opacity="0.6"/>
+
+  <!-- Cut line through wood (amber) -->
+  <line x1="18" y1="20" x2="32" y2="20" stroke="#f59e0b" stroke-width="2.5" stroke-dasharray="3,2" opacity="0.8"/>
+
+  <!-- Sawdust particles (amber) -->
+  <circle cx="37" cy="17" r="1" fill="#fbbf24" opacity="0.7"/>
+  <circle cx="39" cy="21" r="0.8" fill="#fbbf24" opacity="0.6"/>
+  <circle cx="35" cy="19" r="1.2" fill="#fbbf24" opacity="0.8"/>
+  <circle cx="38" cy="23" r="0.7" fill="#fbbf24" opacity="0.5"/>
+  <circle cx="36" cy="22" r="0.9" fill="#fbbf24" opacity="0.6"/>
+</svg>
